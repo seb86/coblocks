@@ -26,6 +26,7 @@ import * as gist from './blocks/gist';
 import * as highlight from './blocks/highlight';
 import * as pricingTable from './blocks/pricing-table';
 import * as pricingTableItem from './blocks/pricing-table-item';
+import * as siteCapture from './blocks/site-capture';
 import * as social from './blocks/social';
 
 export function registerBlocks () {
@@ -41,6 +42,7 @@ export function registerBlocks () {
 		highlight,
 		pricingTable,
 		pricingTableItem,
+		siteCapture,
 		social,
 	].forEach( ( block ) => {
 

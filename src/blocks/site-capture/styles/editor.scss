@@ -1,0 +1,56 @@
+.editor-block-list__block[data-type="coblocks/site-capture"] {
+
+	.wp-block-coblocks-site-capture {
+
+		position: relative;
+
+		&__file {
+			margin: 4px;
+			padding-top: 4px;
+			padding-bottom: 4px;
+		}
+
+		&__file-label {
+			align-items: center;
+			display: flex;
+			flex-basis: 0;
+			font-size: 12px;
+			padding-left: 5px;
+			padding-right: 2px;
+			white-space: nowrap;
+
+			svg {
+				fill: #555d66;
+			}
+		}
+	}
+}
+
+.editor-block-list__block[data-type="coblocks/site-capture"][data-align="center"] {
+	.wp-block-coblocks-site-capture {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.editor-block-list__block[data-type="coblocks/site-capture"] .editor-block-toolbar .editor-url-input__button-modal {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0;
+}
+
+// Although the float markup is different in the editor compared to the frontend,
+// this CSS uses the same technique to allow floats in a wide images context.
+// That is, the block retains its centering and max-width, and a child inside
+// is floated instead of the block itself.
+[data-type="coblocks/site-capture"][data-align="center"],
+[data-type="coblocks/site-capture"][data-align="left"],
+[data-type="coblocks/site-capture"][data-align="right"] {
+	.editor-block-list__block-edit {
+		img {
+			margin: 0;
+			display: table;
+		}
+	}
+}
