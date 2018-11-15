@@ -88,14 +88,15 @@ class Edit extends Component {
 
 			setState( { fetching: true } );
 
-			const CAPTURE_URL = API_URL + encodeURI( tempURL + '?w=' + attributes.width + '&=h' + attributes.height );
+			const CAPTURE_URL = API_URL + encodeURI( tempURL + '?w=' + attributes.width + '&h=' + attributes.height );
 
 			fetch ( CAPTURE_URL, {
 				method: 'GET',
-				headers: {
+				redirect: 'follow',
+				headers: new Headers({
 					'Access-Control-Allow-Origin':'*',
 					'Content-Type':'image/jpeg'
-				}
+				})
 			}).then( response => {
 				if ( response.ok ) {
 					setAttributes( { url: response } );
