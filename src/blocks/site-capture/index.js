@@ -47,7 +47,7 @@ const blockAttributes = {
 const settings = {
 	title: title,
 
-	description: __( 'Display a screenshot of a webpage captured using WordPress API.' ),
+	description: __( 'Display a screenshot of a webpage.' ),
 
 	icon: {
 		src: icon,
