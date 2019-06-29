@@ -16,7 +16,7 @@ import icons from './../../utils/icons';
  */
 const { __ } = wp.i18n;
 const { createBlock } = wp.blocks;
-const { RichText, getColorClassName } = wp.editor;
+const { RichText, getColorClassName } = wp.blockEditor;
 
 /**
  * Block constants
@@ -79,13 +79,9 @@ const blockAttributes = {
 
 const settings = {
 
-	title: __( 'Alert' ),
+	title: title,
 
 	description: __( 'Provide contextual feedback messages.' ),
-
-	icon: {
-		src: icon,
-	},
 
 	keywords: keywords,
 
@@ -103,7 +99,7 @@ const settings = {
 				type: 'block',
 				blocks: [ 'core/paragraph' ],
 				transform: ( { content } ) => {
-					return createBlock( 'coblocks/alert', { value: content } );
+					return createBlock( `coblocks/${ name }`, { value: content } );
 				},
 			},
 			{
@@ -113,6 +109,15 @@ const settings = {
 					div: {
 						classes: [ 'wp-block-coblocks-alert' ],
 					},
+				},
+			},
+			{
+				type: 'prefix',
+				prefix: ':alert',
+				transform: function( content ) {
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 		],

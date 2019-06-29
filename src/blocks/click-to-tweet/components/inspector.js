@@ -9,7 +9,7 @@ import applyWithColors from './colors';
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const { compose } = wp.compose;
-const { InspectorControls, ContrastChecker, PanelColorSettings, FontSizePicker, withFontSizes } = wp.editor;
+const { InspectorControls, ContrastChecker, PanelColorSettings, FontSizePicker, withFontSizes } = wp.blockEditor;
 const { PanelBody, withFallbackStyles } = wp.components;
 
 /**
@@ -47,6 +47,7 @@ class Inspector extends Component {
 			fallbackFontSize,
 			fallbackTextColor,
 			fontSize,
+			isSelected,
 			setAttributes,
 			setButtonColor,
 			setFontSize,

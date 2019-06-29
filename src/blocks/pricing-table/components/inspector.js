@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, RangeControl } = wp.components;
 
 /**
@@ -29,13 +29,13 @@ class Inspector extends Component {
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title={ __( 'Pricing Table Settings' ) } className='coblocks__inspector-block-settings-panel-body'>
+					<PanelBody title={ __( 'Pricing Table Settings' ) }>
 						<RangeControl
 							label={ __( 'Tables' ) }
 							value={ count }
 							onChange={ ( nextCount ) => {
 								setAttributes( {
-									count: nextCount,
+									count: parseInt( nextCount ),
 								} );
 							} }
 							min={ 1 }

@@ -16,7 +16,7 @@
 			display: inline-block;
 			height: 24px;
 			left: 0;
-			mask-image: url(images/twitter.svg);
+			mask-image: url(images/social/twitter.svg);
 			opacity: 0.3;
 			position: absolute;
 			top: 5px;
@@ -44,11 +44,10 @@
 		font-size: 13px;
 		font-style: normal;
 		font-weight: 400;
-		height: 34px;
-		line-height: 34px;
+		line-height: 1.8;
 		margin-left: 40px;
 		margin-top: 10px;
-		padding: 0 1em;
+		padding: 0.28em 1em;
 		position: relative;
 		text-decoration: none !important;
 		white-space: normal;
@@ -61,7 +60,7 @@
 			display: inline-block;
 			height: 18px;
 			margin-right: 5px;
-			mask-image: url(images/twitter.svg);
+			mask-image: url(images/social/twitter.svg);
 			position: relative;
 			top: 4px;
 			width: 18px;
@@ -75,7 +74,6 @@
 	}
 
 	@keyframes pulse {
-
 		0% {
 			transform: scale(1);
 		}

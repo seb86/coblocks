@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { AlignmentToolbar, BlockControls, MediaUpload } = wp.editor;
+const { AlignmentToolbar, BlockControls, MediaUpload, MediaUploadCheck } = wp.blockEditor;
 const { Toolbar, IconButton } = wp.components;
 
 class Controls extends Component {
@@ -17,6 +17,7 @@ class Controls extends Component {
 		const {
 			attributes,
 			setAttributes,
+			isSelected,
 		} = this.props;
 
 		const {
@@ -35,27 +36,29 @@ class Controls extends Component {
 						onChange={ ( nextTextAlign ) => setAttributes( { textAlign: nextTextAlign } ) }
 					/>
 					{ imgUrl &&
-						<Toolbar>
-							<MediaUpload
-								onSelect={ onSelectImage }
-								allowedTypes={ [ 'image' ] }
-								value={ imgId }
-								render={ ( { open } ) => (
-									<IconButton
-										className="components-toolbar__control"
-										label={ __( 'Edit image' ) }
-										icon="edit"
-										onClick={ open }
-									/>
-								) }
-							/>
-							<IconButton
-								className="components-toolbar__control"
-								label={ __( 'Remove image' ) }
-								icon="trash"
-								onClick={ () => setAttributes( { imgUrl: '', imgId: '' } ) }
-							/>
-						</Toolbar>
+						<MediaUploadCheck>
+							<Toolbar>
+								<MediaUpload
+									onSelect={ onSelectImage }
+									allowedTypes={ [ 'image' ] }
+									value={ imgId }
+									render={ ( { open } ) => (
+										<IconButton
+											className="components-toolbar__control"
+											label={ __( 'Edit image' ) }
+											icon="edit"
+											onClick={ open }
+										/>
+									) }
+								/>
+								<IconButton
+									className="components-toolbar__control"
+									label={ __( 'Remove image' ) }
+									icon="trash"
+									onClick={ () => setAttributes( { imgUrl: '', imgId: '' } ) }
+								/>
+							</Toolbar>
+						</MediaUploadCheck>
 					}
 				</BlockControls>
 			</Fragment>

@@ -15,7 +15,8 @@ import icons from './../../utils/icons';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { InnerBlocks } = wp.editor;
+const { createBlock } = wp.blocks;
+const { InnerBlocks } = wp.blockEditor;
 
 /**
  * Block constants
@@ -49,16 +50,13 @@ const settings = {
 
 	description: __( 'Add pricing tables.' ),
 
-	icon: {
-		src: icon,
-	},
-
 	keywords: keywords,
 
 	attributes: blockAttributes,
 
 	supports: {
 		align: [ 'wide', 'full' ],
+		html: false,
 	},
 
 	transforms: {
@@ -70,6 +68,15 @@ const settings = {
 					div: {
 						classes: [ 'wp-block-coblocks-pricing-table' ],
 					},
+				},
+			},
+			{
+				type: 'prefix',
+				prefix: ':pricing',
+				transform: function( content ) {
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 		],

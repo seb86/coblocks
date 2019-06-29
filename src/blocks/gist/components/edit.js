@@ -17,7 +17,7 @@ import Gist from './gist';
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Component, Fragment } = wp.element;
-const { PlainText } = wp.editor;
+const { PlainText, RichText } = wp.blockEditor;
 const { withState } = wp.compose;
 
 /**
@@ -45,11 +45,15 @@ class Edit extends Component {
 		}
 
 		// Check for #file in the entered URL. If it's there, let's use it properly.
-		const file = (newURL).split('#file-').pop()
+		let file = (newURL).split('#file-').pop();
+
+		if( file ){
+			file = '#file-' + file;
+		}
 
 		if ( newURL.match(/#file-*/) != null ) {
 			const newURLWithNoFile = newURL.replace( file , '' ).replace( '#file-' , '' );
-			console.log( newURLWithNoFile );
+
 			this.props.setAttributes( { url: newURLWithNoFile } );
 			this.props.setAttributes( { file: file.replace( /-([^-]*)$/, '.'+'$1' ) } );
 		}
@@ -71,17 +75,18 @@ class Edit extends Component {
 			url,
 			file,
 			meta,
+			caption,
 		} = attributes;
 
 		return [
 			<Fragment>
-				{ isSelected && (
-					<Inspector
+				{ url && url.length > 0 && isSelected && (
+					<Controls
 						{ ...this.props }
 					/>
 				) }
-				{ ( url && url.length > 0 && isSelected ) && (
-					<Controls
+				{ url && url.length > 0 && isSelected && (
+					<Inspector
 						{ ...this.props }
 					/>
 				) }
@@ -90,20 +95,30 @@ class Edit extends Component {
 						<div
 							className={ classnames(
 								className,
-								meta ? null : `${ className }--no-meta`,
+								meta ? null : `no-meta`,
 							) }
 						>
 							<Gist
 								url={ url }
 								file={ file }
 							/>
+							{ ( ! RichText.isEmpty( caption ) || isSelected ) && (
+								<RichText
+									tagName="figcaption"
+									placeholder={ __( 'Write caption…' ) }
+									value={ caption }
+									onChange={ ( value ) => setAttributes( { caption: value } ) }
+									keepPlaceholderOnFocus
+									inlineToolbar
+								/>
+							) }
 						</div>
 					)
 				) : (
 					<div
 						className={ classnames(
 							className,
-							'wp-block-shortcode',
+							'wp-block-shortcode', // Use the same styling as the core shortcode block.
 						) }
 					>
 						<label>

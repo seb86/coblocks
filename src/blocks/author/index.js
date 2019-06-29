@@ -15,7 +15,8 @@ import icons from './../../utils/icons';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RichText, InnerBlocks } = wp.editor;
+const { createBlock } = wp.blocks;
+const { RichText, InnerBlocks } = wp.blockEditor;
 
 /**
  * Block constants
@@ -68,10 +69,6 @@ const settings = {
 
 	description: __( 'Add an author biography.' ),
 
-	icon: {
-		src: icon,
-	},
-
 	keywords: keywords,
 
 	attributes: blockAttributes,
@@ -85,6 +82,15 @@ const settings = {
 					div: {
 						classes: [ 'wp-block-coblocks-author' ],
 					},
+				},
+			},
+			{
+				type: 'prefix',
+				prefix: ':author',
+				transform: function( content ) {
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 		],
@@ -124,7 +130,7 @@ const settings = {
 						) }
 						{ ! RichText.isEmpty( name ) && (
 							<RichText.Content
-								tagName="h3"
+								tagName="span"
 								className="wp-block-coblocks-author__name"
 								value={ name }
 							/>
@@ -136,7 +142,7 @@ const settings = {
 								value={ biography }
 							/>
 						) }
-						<InnerBlocks.Content />
+						<InnerBlocks.Content/>
 					</div>
 				</div>
 			);

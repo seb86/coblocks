@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Internal dependencies
  */
 import './styles/editor.scss';
@@ -10,6 +15,8 @@ import icons from './../../utils/icons';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { RichText } = wp.blockEditor;
+const { Fragment } = wp.element;
 
 /**
  * Block constants
@@ -21,7 +28,6 @@ const title = __( 'Gif' );
 const icon = icons.gif;
 
 const keywords = [
-	__( 'image' ),
 	__( 'animated' ),
 	__( 'coblocks' ),
 ];
@@ -38,6 +44,12 @@ const blockAttributes = {
 		selector: 'img',
 		source: 'attribute',
 		type: 'string',
+		default: '',
+	},
+	caption: {
+		type: 'string',
+		source: 'html',
+		selector: 'figcaption',
 	},
 	align: {
 		type: 'string',
@@ -55,10 +67,6 @@ const settings = {
 	title: title,
 
 	description: __( 'Pick a gif, any gif.' ),
-
-	icon: {
-		src: icon,
-	},
 
 	keywords: keywords,
 
@@ -86,7 +94,13 @@ const settings = {
 			align,
 			width,
 			height,
+			caption,
 		} = attributes;
+
+		const classes = classnames( {
+			[ `align${ align }` ]: align,
+			'is-resized': width || height,
+		} );
 
 		const image = (
 			<img
@@ -97,15 +111,28 @@ const settings = {
 			/>
 		);
 
-		if ( url ) {
+		const figure = (
+			<Fragment>
+				{ image }
+				{ ! RichText.isEmpty( caption ) && <RichText.Content tagName="figcaption" value={ caption } /> }
+			</Fragment>
+		);
+
+		if ( 'left' === align || 'right' === align || 'center' === align ) {
 			return (
-				<figure className={ align ? `align${ align }` : null }>
-					{ image }
-				</figure>
+				<div className={ 'wp-block-image' }>
+					<figure className={ classes }>
+						{ figure }
+					</figure>
+				</div>
 			);
 		}
 
-		return null;
+		return (
+			<figure className={ classes }>
+				{ figure }
+			</figure>
+		);
 	},
 };
 

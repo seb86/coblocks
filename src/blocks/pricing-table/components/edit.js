@@ -17,7 +17,7 @@ import icons from './../../../utils/icons';
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { InnerBlocks } = wp.editor;
+const { InnerBlocks } = wp.blockEditor;
 
 /**
  * Allowed blocks and template constant is passed to InnerBlocks precisely as specified here.
@@ -89,7 +89,7 @@ class Edit extends Component {
 					<div className={ `${ className }__inner` }>
 						<InnerBlocks
 							template={ getCount( count ) }
-							// templateLock="all"
+							templateLock="all"
 							allowedBlocks={ ALLOWED_BLOCKS } />
 					</div>
 				</div>

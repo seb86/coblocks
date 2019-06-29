@@ -1,13 +1,22 @@
 .wp-block-coblocks-gist {
+	&.wp-block-shortcode {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.block-editor-plain-text {
+		margin-left: 10px;
+		padding: 8px;
+	}
 
 	.gist {
 		margin-bottom: 0;
 	}
 
 	&__file {
-		margin: 4px;
-		padding-top: 4px;
+		margin: 3px;
 		padding-bottom: 4px;
+		padding-top: 4px;
 	}
 
 	&__file-label {
@@ -20,7 +29,7 @@
 		white-space: nowrap;
 
 		svg {
-			fill: #555d66;
+			fill: $dark-gray-500;
 		}
 	}
 }

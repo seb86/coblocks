@@ -16,7 +16,7 @@ import Edit from './components/edit';
  */
 const { __ } = wp.i18n;
 const { createBlock } = wp.blocks;
-const { RichText, getColorClassName, getFontSizeClass } = wp.editor;
+const { RichText, getColorClassName, getFontSizeClass } = wp.blockEditor;
 
 /**
  * Block constants
@@ -35,8 +35,8 @@ const keywords = [
 
 const blockAttributes = {
 	content: {
-		type: 'array',
-		source: 'children',
+		type: 'string',
+		source: 'html',
 		selector: 'mark',
 	},
 	align: {
@@ -68,10 +68,6 @@ const settings = {
 
 	description: __( 'Highlight text.' ),
 
-	icon: {
-		src: icon,
-	},
-
 	keywords: keywords,
 
 	attributes: blockAttributes,
@@ -82,7 +78,9 @@ const settings = {
 				type: 'block',
 				blocks: [ 'core/paragraph' ],
 				transform: ( { content } ) => {
-					return createBlock( 'coblocks/highlight', { content: content } );
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 			{
@@ -92,6 +90,15 @@ const settings = {
 					div: {
 						classes: [ 'wp-block-coblocks-highlight' ],
 					},
+				},
+			},
+			{
+				type: 'prefix',
+				prefix: ':highlight',
+				transform: function( content ) {
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 		],
@@ -105,9 +112,9 @@ const settings = {
 						return createBlock( 'core/paragraph' );
 					}
 					// transforming a block with content
-					return ( content || [] ).map( item => createBlock( 'core/paragraph', {
+					return createBlock( 'core/paragraph', {
 						content: content,
-					} ) );
+					} );
 				},
 			},
 		],

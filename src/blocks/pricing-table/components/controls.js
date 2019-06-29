@@ -8,7 +8,7 @@ import icons from './../../../utils/icons';
  */
 const { __, sprintf } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { AlignmentToolbar, BlockControls } = wp.editor;
+const { AlignmentToolbar, BlockControls } = wp.blockEditor;
 const { Toolbar } = wp.components;
 
 class Controls extends Component {
@@ -37,16 +37,16 @@ class Controls extends Component {
 						onChange={ ( nextContentAlign ) => setAttributes( { contentAlign: nextContentAlign } ) }
 					/>
 					<Toolbar
-						className="coblocks__toolbar--numeral"
+						className="components-toolbar-coblocks-numeral-controls"
 						controls={ '123'.split( '' ).map( ( number ) => ( {
 							icon: icons.blank,
-							// translators: %s: tables count e.g: "1", "2", "3"
+							/* translators: %s: number of tables */
 							title: sprintf( __( '%s Tables' ), number ),
 							isActive: count == number,
 							subscript: number,
 							onClick: () =>
 								setAttributes( {
-									count: number,
+									count: parseInt( number ),
 								} )
 							} )
 						) }

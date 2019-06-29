@@ -15,7 +15,9 @@ import Edit from './components/edit';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { createBlock } = wp.blocks;
+const { Fragment } = wp.element;
+const { createBlock, getBlockAttributes } = wp.blocks;
+const { RichText } = wp.blockEditor;
 
 /**
  * Block constants
@@ -41,7 +43,18 @@ const blockAttributes = {
 	},
 	meta: {
 		type: 'boolean',
-		default: false,
+		default: true,
+	},
+	caption: {
+		type: 'string',
+		source: 'html',
+		selector: 'figcaption',
+	},
+};
+
+const schema = {
+	div: {
+		classes: [ 'wp-block-coblocks-gist' ],
 	},
 };
 
@@ -50,10 +63,6 @@ const settings = {
 	title: title,
 
 	description: __( 'Embed GitHub gists by adding the gist link.' ),
-
-	icon: {
-		src: icon,
-	},
 
 	keywords: keywords,
 
@@ -66,10 +75,9 @@ const settings = {
 				priority: 1,
 				isMatch: ( node ) => node.nodeName === 'P' && /^\s*(https?:\/\/\S+)\s*$/i.test( node.textContent ) && node.textContent.match( /^https?:\/\/(www\.)?gist\.github\.com\/.+/i ),
 				transform: ( node ) => {
-
 					// Check for a file within the URL.
 					const file = ( node.textContent.trim() ).split( '#' ).pop();
-					const fileClean = file.replace('file-', '').replace('-', '.');
+					const fileClean = file.replace('file-', '#file-').replace('-', '.');
 
 					return createBlock( 'coblocks/gist', {
 						url: node.textContent.trim(),
@@ -78,12 +86,12 @@ const settings = {
 				},
 			},
 			{
-				type: 'raw',
-				selector: 'div',
-				schema: {
-					div: {
-						classes: [ 'wp-block-coblocks-gist' ],
-					},
+				type: 'prefix',
+				prefix: ':gist',
+				transform: function( content ) {
+					return createBlock( `coblocks/${ name }`, {
+						content,
+					} );
 				},
 			},
 		],
@@ -98,25 +106,61 @@ const settings = {
 
 	save( { attributes, className } ) {
 
-		const { url, file, meta } = attributes;
+		const {
+			url,
+			file,
+			meta,
+			caption,
+		} = attributes;
+
+		const classes = classnames( {
+				[ 'no-meta' ] : ! meta,
+			}
+		);
 
 		const src = file ? `${ url }.js?file=${ file }` : `${ url }.js`;
 
 		const noscriptSrc = file ? `${ url }#file-${ file.replace('.', '-') }` : `${ url }`;
 
 		return (
-			<div
-				className={ classnames(
-					className,
-					meta ? null : `wp-block-coblocks-gist--no-meta`,
-				) }
-			>
+			<div className={ classes }>
 				<script src={ src }/>
 				<noscript><a href={ noscriptSrc }>{ __( 'View this gist on GitHub' ) }</a></noscript>
+				{ ! RichText.isEmpty( caption ) && <RichText.Content tagName="figcaption" value={ caption } /> }
 			</div>
 
 		);
 	},
+
+	deprecated: [
+		{
+			save( { attributes, className } ) {
+
+			const {
+				url,
+				file,
+				meta,
+			} = attributes;
+
+			const classes = classnames( {
+					[ 'wp-block-coblocks-gist--no-meta' ] : ! meta,
+				}
+			);
+
+			const src = file ? `${ url }.js?file=${ file }` : `${ url }.js`;
+
+			const noscriptSrc = file ? `${ url }#file-${ file.replace('.', '-') }` : `${ url }`;
+
+			return (
+				<div className={ classes }>
+					<script src={ src }/>
+					<noscript><a href={ noscriptSrc }>{ __( 'View this gist on GitHub' ) }</a></noscript>
+				</div>
+
+			);
+		},
+	}
+	],
 };
 
 export { name, title, icon, settings };

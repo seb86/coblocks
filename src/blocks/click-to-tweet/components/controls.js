@@ -9,7 +9,7 @@ import icons from './../../../utils/icons';
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const { Toolbar } = wp.components;
-const { AlignmentToolbar, BlockControls } = wp.editor;
+const { AlignmentToolbar, BlockControls } = wp.blockEditor;
 
 class Controls extends Component {
 
@@ -22,6 +22,7 @@ class Controls extends Component {
 		const {
 			className,
 			attributes,
+			isSelected,
 			setAttributes,
 		} = this.props;
 
@@ -38,22 +39,24 @@ class Controls extends Component {
 						onChange={ ( nextTextAlign ) => setAttributes( { textAlign: nextTextAlign } ) }
 					/>
 					<Toolbar>
-						<label
-							aria-label={ __( 'Twitter Username' ) }
-							className={ `${ className }__via-label` }
-							htmlFor={ `${ className }__via` }
-						>
-							{ icons.at }
-						</label>
-						<input
-							aria-label={ __( 'Twitter Username' ) }
-							className={ `${ className }__via` }
-							id={ `${ className }__via` }
-							onChange={ ( event ) => setAttributes( { via: event.target.value } ) }
-							placeholder={ __( 'Username' ) }
-							type="text"
-							value={ via }
-						/>
+						<div className={ `${ className }__via-wrapper` }>
+							<label
+								aria-label={ __( 'Twitter Username' ) }
+								className={ `${ className }__via-label` }
+								htmlFor={ `${ className }__via` }
+							>
+								{ icons.at }
+							</label>
+							<input
+								aria-label={ __( 'Twitter Username' ) }
+								className={ `${ className }__via` }
+								id={ `${ className }__via` }
+								onChange={ ( event ) => setAttributes( { via: event.target.value } ) }
+								placeholder={ __( 'Username' ) }
+								type="text"
+								value={ via }
+							/>
+						</div>
 					</Toolbar>
 				</BlockControls>
 			</Fragment>
